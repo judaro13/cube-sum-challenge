@@ -19,40 +19,33 @@ class Cube
 
   def query(point1:, point2:)
     return false unless valid_point_intersection?(point1, point2)
-    q_matrix = reduce_matrix(point1, point2)
-    q_matrix.flatten.inject(0){|sum,x| sum + x }
+    sum_matrix(point1, point2)
   end
 
-  def reduce_matrix(point1, point2)
-    q_matrix = @matrix.clone
-    x_remove = positions_for_remove(point1[:x], point2[:x])
-    y_remove = positions_for_remove(point1[:y], point2[:y])
-    z_remove = positions_for_remove(point1[:z], point2[:z])
+  def sum_matrix(point1, point2)
+    q_matrix = @matrix.dup
 
-    z_remove.each_with_index do |z, i|
-      q_matrix.delete_at(z-i)
-    end
+    x_query = arr_to_query(point1[:x], point2[:x])
+    y_query = arr_to_query(point1[:y], point2[:y])
+    z_query = arr_to_query(point1[:z], point2[:z])
 
-    q_matrix.each_with_index do |z, zi|
-      x_remove.each_with_index do |x, xi|
-        q_matrix[zi].delete_at(x-xi)
-      end
-    end
-
-    q_matrix.each_with_index do |z, zi|
-      z.each do |x, xi|
-        y_remove.each_with_index do |y, yi|
-          q_matrix[zi][xi].delete_at(y-yi)
+    sum = 0
+    @matrix.each_with_index do |z, zi|
+      next unless z_query.include?(zi)
+      z.each_with_index do |x, xi|
+        next unless x_query.include?(xi)
+        x.each_with_index do |y, yi|
+          next unless y_query.include?(yi)
+          sum += y
         end
       end
     end
 
-    q_matrix
-
+    sum
   end
 
-  def positions_for_remove(coord1, coord2)
-    [*0..@matrix_size] - ([*coord1..coord2]||[*0..@matrix_size])
+  def arr_to_query(coord1,coord2)
+    [*coord1..coord2]
   end
 
   def valid_point_intersection?(point1, point2)
@@ -68,7 +61,7 @@ class Cube
 end
 
 
-# 
+#
 # require "pry"
 #
 # binding.pry
