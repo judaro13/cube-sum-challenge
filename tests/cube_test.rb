@@ -9,13 +9,6 @@ class  CubeTest < Minitest::Test
     assert cube.matrix.size == 2
   end
 
-  def test_update_point
-    cube = Cube.new(matrix_size: 2)
-    point = {x: 0, y: 1, z: 1}
-    cube.update(point: point, value: 5)
-    asset cube.matrix[point[:z]][point[:x]][point[:y]] == 5
-  end
-
   def test_valid_point
     cube = Cube.new(matrix_size: 2)
     point = {x: 0, y: 1, z: 1}
@@ -31,9 +24,17 @@ class  CubeTest < Minitest::Test
     v_point = cube.valid_point?(point)
     asset v_point == false
 
-
     point = {y: 1, z: "2"}
     v_point = cube.valid_point?(point)
     asset v_point == false
   end
+
+  def test_update_point
+    cube = Cube.new(matrix_size: 2)
+    point = {x: 0, y: 1, z: 1}
+    cube.update(point: point, value: 5)
+    asset cube.matrix[point[:z]][point[:x]][point[:y]] == 5
+  end
+
+
 end

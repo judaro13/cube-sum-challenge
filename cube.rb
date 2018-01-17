@@ -1,7 +1,7 @@
 class Cube
   attr_reader :matrix_size, :matrix
   def initialize(matrix_size:)
-    return false if matrix_size > 100
+    raise "matrix size must be between 1 and 100" if matrix_size > 100 || matrix_size < 1
     @matrix_size = matrix_size
     coord = [0]*matrix_size
     @matrix = [[coord]*matrix_size]*matrix_size
