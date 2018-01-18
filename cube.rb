@@ -11,8 +11,13 @@ class Cube
     @matrix = Array.new(@matrix_size){ Array.new(@matrix_size) { Array.new(@matrix_size, 0) }}
   end
 
-  def matrix
-    @matrix
+  def set_matrix(matrix:)
+    return @matrix unless valid_matrix?(matrix)
+    @matrix = matrix
+  end
+
+  def valid_matrix?(matrix)
+    matrix.flatten.size == @matrix_size**3
   end
 
   # point {x: INT, y: INT, z: INT }
