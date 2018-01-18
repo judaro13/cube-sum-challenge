@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'pry'
-require_relative '../cube'
+require_relative '../lib/cube'
 
 class  CubeTest < Minitest::Test
   def test_cube_matrix
