@@ -4,8 +4,8 @@
     <input type="text" readonly class="form-control-plaintext" value="Test cases number">
   </div>
   <div class="form-group mx-sm-3 mb-2">
-    <label for="test_cases_number" class="sr-only">Test cases number</label>
-    <input type="number" class="form-control" id="test_cases_number"  >
+    <label for="testCasesNumber" class="sr-only">Test cases number</label>
+    <input type="number" class="form-control" id="testCasesNumber"  >
   </div>
   <button id="submit_test" class="btn btn-primary mb-2">Submit</button>
 </form>
@@ -15,33 +15,33 @@
     <input type="text" readonly class="form-control-plaintext"  value="Matrix size">
   </div>
   <div class="form-group mx-sm-3 mb-2">
-    <label for="matrix_size" class="sr-only">Test cases number</label>
-    <input type="number" class="form-control" id="matrix_size"  disabled>
+    <label for="matrixSize" class="sr-only">Test cases number</label>
+    <input type="number" class="form-control" id="matrixSize"  disabled>
   </div>
-  <button id="submit_matrix" class="btn btn-primary mb-2" disabled>Submit</button>
+  <button id="submitMatrix" class="btn btn-primary mb-2" disabled>Submit</button>
 </form>
 
-<form class="form-inline hide" id="form_operations">
+<form class="form-inline hide" id="formOperations">
   <div class="form-group mb-2">
     <input type="text" readonly class="form-control-plaintext"  value="Total operations">
   </div>
   <div class="form-group mx-sm-3 mb-2">
-    <label for="total_operations" class="sr-only">Total operations</label>
-    <input type="number" class="form-control" id="total_operations"disabled >
+    <label for="totalOperations" class="sr-only">Total operations</label>
+    <input type="number" class="form-control" id="totalOperations"disabled >
   </div>
-  <button id="submit_operations" class="btn btn-primary mb-2" disabled>Submit</button>
+  <button id="submitOperations" class="btn btn-primary mb-2" disabled>Submit</button>
 </form>
 
 <div class="hide" id="cube_operations">
   <br/>
-  <h5> Operations Input <span id="span_count_operations"></span> &sol; <span id="span_total_operations"></span></h5>
+  <h5> Operations Input <span id="span_count_operations"></span> &sol; <span id="span_totalOperations"></span></h5>
 
   <form class="form-inline" id="form_input_operation">
     <div class="form-group mb-2">
       <input type="text" readonly class="form-control-plaintext"  value="Operation">
     </div>
     <div class="form-group mx-sm-3 mb-2">
-      <label for="total_operations" class="sr-only">Operation</label>
+      <label for="totalOperations" class="sr-only">Operation</label>
       <input type="text" class="form-control" id="text_operation" disabled >
     </div>
     <button id="submit_input_operation" class="btn btn-primary mb-2" disabled>Submit</button>
@@ -60,10 +60,10 @@
 
   function InitialStorage() {
     localStorage.matrix = "";
-    localStorage.matrix_size = 0;
+    localStorage.matrixSize = 0;
     localStorage.test_case = 0;
     localStorage.count_test_case = 1;
-    localStorage.total_operations = 0;
+    localStorage.totalOperations = 0;
     localStorage.count_operations = 0;
   }
 
@@ -73,36 +73,36 @@
     $('#restart_tests').prop('disabled', true);
     $('#restart_tests').addClass('hide');
 
-    $('#test_cases_number').val('');
-    $('#matrix_size').val('');
-    $('#total_operations').val('');
-    $('#total_operations').val('');
+    $('#testCasesNumber').val('');
+    $('#matrixSize').val('');
+    $('#totalOperations').val('');
+    $('#totalOperations').val('');
     $('#text_operation').val('');
     $('#output_values').html('');
 
-    $('#test_cases_number').prop('disabled', false);
+    $('#testCasesNumber').prop('disabled', false);
     $('#submit_test').prop('disabled', false);
     $('#submit_test').removeClass('hide');
 
     $('#form_matrix').addClass('hide');
-    $('#form_operations').addClass('hide');
+    $('#formOperations').addClass('hide');
     $('#form_matrix').addClass('hide');
     $('#cube_operations').addClass('hide');
   }
 
 
   function MainConstraintValidations() {
-    if(localStorage.count_operations >= localStorage.total_operations){
+    if(localStorage.count_operations >= localStorage.totalOperations){
       localStorage.count_test_case = parseInt(localStorage.count_test_case) + 1;
       if(localStorage.count_test_case <= localStorage.test_case){
         localStorage.count_operations = 0;
-        $('#submit_matrix').prop('disabled', false);
-        $("#submit_matrix").removeClass("hide");
-        $("#matrix_size").prop('disabled', false);
+        $('#submitMatrix').prop('disabled', false);
+        $("#submitMatrix").removeClass("hide");
+        $("#matrixSize").prop('disabled', false);
 
-        $("#form_operations").addClass("hide");
-        $("#submit_operations").removeClass("hide");
-        $('#submit_operations').prop('disabled', false);
+        $("#formOperations").addClass("hide");
+        $("#submitOperations").removeClass("hide");
+        $('#submitOperations').prop('disabled', false);
 
         $('#text_operation').prop('disabled', true);
         $('#submit_input_operation').prop('disabled', true);
@@ -128,7 +128,7 @@
       numbers.splice(3,1);
       valid = true;
       $.map( numbers, function( v, i ) {
-        if(v > localStorage.matrix_size){
+        if(v > localStorage.matrixSize){
           valid = false;
         }
       });
@@ -137,7 +137,7 @@
         return [true]
       }
       else{
-        return [false, "The position number must be between 1 and "+ localStorage.matrix_size]
+        return [false, "The position number must be between 1 and "+ localStorage.matrixSize]
       }
     }
     else{
@@ -154,39 +154,39 @@
 
     $("#submit_test").click(function(event){
       event.preventDefault();
-      var val = $("#test_cases_number").val();
+      var val = $("#testCasesNumber").val();
       if( val && val > 0 && val <= 50){
-        localStorage.test_case = $("#test_cases_number").val();
+        localStorage.test_case = $("#testCasesNumber").val();
         $("#submit_test").addClass("hide");
         $('#submit_test').prop('disabled', true);
-        $('#test_cases_number').prop('disabled', true);
+        $('#testCasesNumber').prop('disabled', true);
 
         $("#form_matrix").removeClass("hide");
-        $('#matrix_size').prop('disabled', false);
-        $('#submit_matrix').prop('disabled', false);
-        $("#submit_matrix").removeClass("hide");
+        $('#matrixSize').prop('disabled', false);
+        $('#submitMatrix').prop('disabled', false);
+        $("#submitMatrix").removeClass("hide");
       }else {
         alert("Please add a value between 1 and 50")
       }
     });
 
-    $("#submit_matrix").click(function(event){
+    $("#submitMatrix").click(function(event){
       event.preventDefault();
-      var val = $("#matrix_size").val();
+      var val = $("#matrixSize").val();
       if( val && val > 0 && val <= 100){
-        localStorage.matrix_size = $("#matrix_size").val();
-        $("#submit_matrix").addClass("hide");
-        $("#submit_matrix").prop('disabled', true);
-        $('#matrix_size').prop('disabled', true);
+        localStorage.matrixSize = $("#matrixSize").val();
+        $("#submitMatrix").addClass("hide");
+        $("#submitMatrix").prop('disabled', true);
+        $('#matrixSize').prop('disabled', true);
 
-        $("#form_operations").removeClass("hide");
-        $('#total_operations').prop('disabled', false);
-        $('#submit_operations').prop('disabled', false);
-        $("#submit_operations").removeClass("hide");
+        $("#formOperations").removeClass("hide");
+        $('#totalOperations').prop('disabled', false);
+        $('#submitOperations').prop('disabled', false);
+        $("#submitOperations").removeClass("hide");
         $.ajax({
           method: "POST",
           url: "http://localhost:9393",
-          data: { matrix: localStorage.matrix_size  },
+          data: { matrix: localStorage.matrixSize  },
           success: function(result){
             localStorage.matrix = result;
           }
@@ -196,21 +196,21 @@
       }
     });
 
-    $("#submit_operations").click(function(event){
+    $("#submitOperations").click(function(event){
       event.preventDefault();
-      var val = $("#total_operations").val();
+      var val = $("#totalOperations").val();
       if( val && val > 0 && val <= 1000){
-        localStorage.total_operations = $("#total_operations").val();
-        $("#submit_operations").addClass("hide");
+        localStorage.totalOperations = $("#totalOperations").val();
+        $("#submitOperations").addClass("hide");
         $("#cube_operations").removeClass("hide");
 
         $("#text_operation").prop('disabled', false);
         $("#submit_input_operation").prop('disabled', false);
 
         $("#span_count_operations").text(localStorage.count_operations);
-        $("#span_total_operations").text(localStorage.total_operations);
-        $('#submit_operations').prop('disabled', true);
-        $('#total_operations').prop('disabled', true);
+        $("#span_totalOperations").text(localStorage.totalOperations);
+        $('#submitOperations').prop('disabled', true);
+        $('#totalOperations').prop('disabled', true);
       }else {
         alert("Please add a value between 1 and 1000")
       }
@@ -228,7 +228,7 @@
         $.ajax({
           method: "POST",
           url: "http://localhost:9393/operation",
-          data: { data: val, size: localStorage.matrix_size, matrix:  localStorage.matrix},
+          data: { data: val, size: localStorage.matrixSize, matrix:  localStorage.matrix},
           success: function(result){
             $("#output_values").append( "<p>"+result+"</p>" );
             if(/UPDATE/.test(val)){
