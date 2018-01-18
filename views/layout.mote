@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .hide{display: none !important;}
+      .highlight {
+        padding: 9px 14px;
+        margin-bottom: 14px;
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        border-radius: 4px;
+      }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <div class="container"><header class="header clearfix">
+      <h3 class="text-muted">{{title}}</h3>
+    </header>
+    <p>
+      You are given a 3-D Matrix in which each block contains 0 initially. The first block is defined by the coordinate (1,1,1) and the last block is defined by the coordinate (N,N,N). There are two types of queries.
+    </p>
+    <div class="bd-example">
+      <code class="language-html" data-lang="html">
+        UPDATE x y z W
+      </code>
+    </div>
+    <p>
+      updates the value of block (x,y,z) to W.
+    </p>
+    <div class="bd-example">
+      <code class="language-html" data-lang="html">
+        QUERY x1 y1 z1 x2 y2 z2
+      </code>
+    </div>
+    <p>
+      calculates the sum of the value of blocks whose x coordinate is between x1 and x2 (inclusive), y coordinate between y1 and y2 (inclusive) and z coordinate between z1 and z2 (inclusive).
+    </p>
+     {{content}}
+   </div>
+  </body>
+</html>

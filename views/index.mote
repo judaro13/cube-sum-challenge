@@ -1,0 +1,246 @@
+
+<form class="form-inline">
+  <div class="form-group mb-2">
+    <input type="text" readonly class="form-control-plaintext" value="Test cases number">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="test_cases_number" class="sr-only">Test cases number</label>
+    <input type="number" class="form-control" id="test_cases_number"  >
+  </div>
+  <button id="submit_test" class="btn btn-primary mb-2">Submit</button>
+</form>
+
+<form class="form-inline hide" id="form_matrix">
+  <div class="form-group mb-2">
+    <input type="text" readonly class="form-control-plaintext"  value="Matrix size">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="matrix_size" class="sr-only">Test cases number</label>
+    <input type="number" class="form-control" id="matrix_size"  disabled>
+  </div>
+  <button id="submit_matrix" class="btn btn-primary mb-2" disabled>Submit</button>
+</form>
+
+<form class="form-inline hide" id="form_operations">
+  <div class="form-group mb-2">
+    <input type="text" readonly class="form-control-plaintext"  value="Total operations">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="total_operations" class="sr-only">Total operations</label>
+    <input type="number" class="form-control" id="total_operations"disabled >
+  </div>
+  <button id="submit_operations" class="btn btn-primary mb-2" disabled>Submit</button>
+</form>
+
+<div class="hide" id="cube_operations">
+  <br/>
+  <h5> Operations Input <span id="span_count_operations"></span> &sol; <span id="span_total_operations"></span></h5>
+
+  <form class="form-inline" id="form_input_operation">
+    <div class="form-group mb-2">
+      <input type="text" readonly class="form-control-plaintext"  value="Operation">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+      <label for="total_operations" class="sr-only">Operation</label>
+      <input type="text" class="form-control" id="text_operation" disabled >
+    </div>
+    <button id="submit_input_operation" class="btn btn-primary mb-2" disabled>Submit</button>
+  </form>
+
+  <h6>Output values</h6>
+  <div class="highlight" id="output_values" style="height: 200px;overflow-y: auto;">
+
+
+  </div>
+</div>
+
+<button id="restart_tests" class="btn btn-primary mb-2 hide" disabled>Restar tests</button>
+
+<script>
+
+  function InitialStorage() {
+    localStorage.matrix = "";
+    localStorage.matrix_size = 0;
+    localStorage.test_case = 0;
+    localStorage.count_test_case = 1;
+    localStorage.total_operations = 0;
+    localStorage.count_operations = 0;
+  }
+
+
+  function RestarTests(){
+    InitialStorage();
+    $('#restart_tests').prop('disabled', true);
+    $('#restart_tests').addClass('hide');
+
+    $('#test_cases_number').val('');
+    $('#matrix_size').val('');
+    $('#total_operations').val('');
+    $('#total_operations').val('');
+    $('#text_operation').val('');
+    $('#output_values').html('');
+
+    $('#test_cases_number').prop('disabled', false);
+    $('#submit_test').prop('disabled', false);
+    $('#submit_test').removeClass('hide');
+
+    $('#form_matrix').addClass('hide');
+    $('#form_operations').addClass('hide');
+    $('#form_matrix').addClass('hide');
+    $('#cube_operations').addClass('hide');
+  }
+
+
+  function MainConstraintValidations() {
+    if(localStorage.count_operations >= localStorage.total_operations){
+      localStorage.count_test_case = parseInt(localStorage.count_test_case) + 1;
+      if(localStorage.count_test_case <= localStorage.test_case){
+        localStorage.count_operations = 0;
+        $('#submit_matrix').prop('disabled', false);
+        $("#submit_matrix").removeClass("hide");
+        $("#matrix_size").prop('disabled', false);
+
+        $("#form_operations").addClass("hide");
+        $("#submit_operations").removeClass("hide");
+        $('#submit_operations').prop('disabled', false);
+
+        $('#text_operation').prop('disabled', true);
+        $('#submit_input_operation').prop('disabled', true);
+
+        $("#output_values").append( "<div class='alert alert-info'>*********** FINISHED OPERATIONS ***********</div>" );
+        $("#output_values").append( "<p>Add a new matrix size and operations total </p>" );
+      }
+      else{
+        $('#text_operation').prop('disabled', true);
+        $('#submit_input_operation').prop('disabled', true);
+        $("#output_values").append( "<div class='alert alert-success'>*********** FINISHED TEST CASES ***********</div>" );
+        $("#restart_tests").prop('disabled', false);
+        $("#restart_tests").removeClass('hide');
+      }
+    }
+  }
+
+  function ValidateValues(val){
+    reg_exp = /QUERY ([0-9]+\s?){6}/.test(val) || /UPDATE ([0-9]+\s?){4}/.test(val)
+    if(reg_exp){
+      var numbers = val.split(" ");
+      numbers.splice(0,1);
+      numbers.splice(3,1);
+      valid = true;
+      $.map( numbers, function( v, i ) {
+        if(v > localStorage.matrix_size){
+          valid = false;
+        }
+      });
+
+      if(valid){
+        return [true]
+      }
+      else{
+        return [false, "The position number must be between 1 and "+ localStorage.matrix_size]
+      }
+    }
+    else{
+      return [false, "Please use 'UPDATE x y z value' for update a value or 'QUERY x1 y1 z1 x2 y2 z2' for get the summation between 2 points (x, y and z must be bigger than 0)"]
+    }
+  }
+
+  $(document).ready(function(){
+    InitialStorage()
+
+    $("#restart_tests").click(function(event){
+      RestarTests();
+    });
+
+    $("#submit_test").click(function(event){
+      event.preventDefault();
+      var val = $("#test_cases_number").val();
+      if( val && val > 0 && val <= 50){
+        localStorage.test_case = $("#test_cases_number").val();
+        $("#submit_test").addClass("hide");
+        $('#submit_test').prop('disabled', true);
+        $('#test_cases_number').prop('disabled', true);
+
+        $("#form_matrix").removeClass("hide");
+        $('#matrix_size').prop('disabled', false);
+        $('#submit_matrix').prop('disabled', false);
+        $("#submit_matrix").removeClass("hide");
+      }else {
+        alert("Please add a value between 1 and 50")
+      }
+    });
+
+    $("#submit_matrix").click(function(event){
+      event.preventDefault();
+      var val = $("#matrix_size").val();
+      if( val && val > 0 && val <= 100){
+        localStorage.matrix_size = $("#matrix_size").val();
+        $("#submit_matrix").addClass("hide");
+        $("#submit_matrix").prop('disabled', true);
+        $('#matrix_size').prop('disabled', true);
+
+        $("#form_operations").removeClass("hide");
+        $('#total_operations').prop('disabled', false);
+        $('#submit_operations').prop('disabled', false);
+        $("#submit_operations").removeClass("hide");
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:9393",
+          data: { matrix: localStorage.matrix_size  },
+          success: function(result){
+            localStorage.matrix = result;
+          }
+        })
+      }else {
+        alert("Please add a value between 1 and 100")
+      }
+    });
+
+    $("#submit_operations").click(function(event){
+      event.preventDefault();
+      var val = $("#total_operations").val();
+      if( val && val > 0 && val <= 1000){
+        localStorage.total_operations = $("#total_operations").val();
+        $("#submit_operations").addClass("hide");
+        $("#cube_operations").removeClass("hide");
+
+        $("#text_operation").prop('disabled', false);
+        $("#submit_input_operation").prop('disabled', false);
+
+        $("#span_count_operations").text(localStorage.count_operations);
+        $("#span_total_operations").text(localStorage.total_operations);
+        $('#submit_operations').prop('disabled', true);
+        $('#total_operations').prop('disabled', true);
+      }else {
+        alert("Please add a value between 1 and 1000")
+      }
+    });
+
+
+    $("#submit_input_operation").click(function(event){
+      event.preventDefault();
+      var val = $("#text_operation").val();
+      var validate_val = ValidateValues(val);
+      if( validate_val[0]){
+        localStorage.count_operations = parseInt(localStorage.count_operations) + 1;
+        $("#output_values").append( "<p>Processing operation...</p>" );
+        $("#span_count_operations").html(localStorage.count_operations);
+        $.ajax({
+          method: "POST",
+          url: "http://localhost:9393/operation",
+          data: { data: val, size: localStorage.matrix_size, matrix:  localStorage.matrix},
+          success: function(result){
+            $("#output_values").append( "<p>"+result+"</p>" );
+            if(/UPDATE/.test(val)){
+              localStorage.matrix = result;
+            }
+            MainConstraintValidations();
+            $('#output_values').scrollTop($('#output_values')[0].scrollHeight);
+          }
+        })
+      }else {
+        alert(validate_val[1])
+      }
+    });
+  });
+</script>
