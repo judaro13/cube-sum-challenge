@@ -33,9 +33,9 @@ class Cube
 
   def sum_matrix(point1, point2)
     sum = 0
-    @matrix[point1[:z]...point2[:z]].each do |z|
-      z[point1[:x]...point2[:x]].each do |x|
-        x[point1[:y]...point2[:y]].each_with_index do |y, yi|
+    @matrix[point1[:z]..point2[:z]].each do |z|
+      z[point1[:x]..point2[:x]].each do |x|
+        x[point1[:y]..point2[:y]].each_with_index do |y, yi|
           sum += y
         end
       end
